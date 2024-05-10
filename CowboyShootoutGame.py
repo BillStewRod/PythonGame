@@ -1,6 +1,6 @@
-from time import sleep 
-from random import randint 
-import msvcrt 
+from time import sleep
+from random import randint
+import msvcrt
 import os
 import subprocess
 
