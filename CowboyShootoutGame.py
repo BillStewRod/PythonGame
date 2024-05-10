@@ -1,40 +1,71 @@
-import os
+import pygame
+import sys
 import time
 import random
-import platform
-import keyboard
 
-def clear_screen():
-    if platform.system() == 'Windows':
-        os.system('cls')
-    else:
-        os.system('clear')
+# Initialize Pygame
+pygame.init()
 
-def wait_for_keypress(target):
-    while True:
-        if keyboard.is_pressed(str(target)):
-            return True
-        time.sleep(0.1)
+# Set up the window dimensions
+WINDOW_WIDTH = 400
+WINDOW_HEIGHT = 200
+screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
-clear_screen()
+# Set up the title of the window
+pygame.display.set_caption('Cowboy Shootout')
 
+# Define some colors
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+
+# Set up the font
+font = pygame.font.SysFont(None, 30)
+
+# Define the target number
 target = random.randint(1, 9)
 
-print('COWBOY SHOOTOUT'
-      '\n' 'YOU ARE BACK TO BACK'
-      '\n' 'TAKE 10 PACES...')
+# Game loop
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        elif event.type == pygame.KEYDOWN:
+            if event.unicode == str(target):
+                print('BUT YOU SHOOT FIRST')
+                print('YOU KILLED HIM')
+                pygame.quit()
+                sys.exit()
 
-for i in range(1, 11):
-    time.sleep(0.5)
-    print(i, '...')
+    # Clear the screen
+    screen.fill(BLACK)
 
-sleep_time = random.randint(1, 5)
-time.sleep(sleep_time)
-print('HE DRAWS...')
+    # Print the game text
+    text = font.render('COWBOY SHOOTOUT\nYOU ARE BACK TO BACK\nTAKE 10 PACES...', True, WHITE)
+    screen.blit(text, (10, 10))
 
-if wait_for_keypress(target):
-    print('BUT YOU SHOOT FIRST'
-          '\n' 'YOU KILLED HIM')
-else:
-    print('AND SHOOTS'
-          '\n' 'YOU ARE DEAD')
+    # Update the screen
+    pygame.display.flip()
+
+    # Wait for 10 seconds
+    time.sleep(10)
+
+    # Print the opponent's draw
+    text = font.render('HE DRAWS...', True, WHITE)
+    screen.blit(text, (10, 100))
+    pygame.display.flip()
+
+    # Wait for a random amount of time
+    sleep_time = random.randint(1, 5)
+    time.sleep(sleep_time)
+
+    # Print the opponent's shot
+    text = font.render('AND SHOOTS\nYOU ARE DEAD', True, WHITE)
+    screen.blit(text, (10, 150))
+    pygame.display.flip()
+
+    # Wait for a key press
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                break
