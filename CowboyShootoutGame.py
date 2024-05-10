@@ -1,49 +1,40 @@
-from time import sleep
-from random import randint
-import msvcrt
 import os
-import subprocess
+import time
+import random
+import platform
+import keyboard
 
 def clear_screen():
-    if os.name == 'nt':  # Check if running on Windows
-        _ = subprocess.call('cls')
-    else:  # Assumes macOS/Linux 
-        _ = subprocess.call('clear')
+    if platform.system() == 'Windows':
+        os.system('cls')
+    else:
+        os.system('clear')
 
-clear_screen() 
+def wait_for_keypress(target):
+    while True:
+        if keyboard.is_pressed(str(target)):
+            return True
+        time.sleep(0.1)
 
-target = randint(1, 9)  # Assuming number keys for aiming
+clear_screen()
+
+target = random.randint(1, 9)
 
 print('COWBOY SHOOTOUT'
-        '\n''YOU ARE BACK TO BACK'
-        '\n' 'TAKE 10 PACES...')
+      '\n' 'YOU ARE BACK TO BACK'
+      '\n' 'TAKE 10 PACES...')
 
-W = 1
-while W <= 10:
-    sleep(0.5)
-    print(W, '...')
-    W += 1
+for i in range(1, 11):
+    time.sleep(0.5)
+    print(i, '...')
 
-S = randint(1, 5)
-sleep(S)
+sleep_time = random.randint(1, 5)
+time.sleep(sleep_time)
 print('HE DRAWS...')
 
-X = 0
-while X < S:
-    if msvcrt.kbhit() == True:
-        try:
-            key_pressed = ord(msvcrt.getch()) - 48  # Convert key press to number
-            if key_pressed == target:
-                print('BUT YOU SHOOT FIRST'
-                        '\n' 'YOU KILLED HIM')
-                exit()
-            else:
-                print('YOU MISSED!')
-        except ValueError:
-            print("Press a number key to aim!")
-    else:
-        sleep (0.5)
-        X = X + 1
-
-print(' AND SHOOTS'
-'\n''YOU ARE DEAD')
+if wait_for_keypress(target):
+    print('BUT YOU SHOOT FIRST'
+          '\n' 'YOU KILLED HIM')
+else:
+    print('AND SHOOTS'
+          '\n' 'YOU ARE DEAD')
